@@ -1,11 +1,13 @@
-const Task = require('../model/taskModel.js');
+const Task = require('../models/taskModel.js');
 const mongoose = require('mongoose');
 
 
 module.exports = {
+  //Create task
   create: async (req, res) => {
+    const {title, description, createdBy} = req.body;
     try {
-      const task = await Task.create({ title: req.body.title, description: req.body.description });
+      const task = await Task.create(req.body);
       if (!task) {
         res.status(404).json({message: 'Task could not be created'});
       }
@@ -15,6 +17,7 @@ module.exports = {
     }
   },
 
+  //List task
   list: async (req, res) => {
     try {
       const tasks = await Task.find();
@@ -24,6 +27,7 @@ module.exports = {
     }
   },
 
+  // View task
   view: async (req, res) => {
     try {
       const task = await Task.findById({
@@ -38,43 +42,49 @@ module.exports = {
     }
   },
 
+  // Update task
   update: async (req, res) => {
     try {
-      task = await Task.findOneAndUpdate(
-        {
-          _id: mongoose.Types.ObjectId(req.params.id),
-        },
-        req.body,
-        {
-          new: true,
-        },
-      );
-      if (!task) {
-        res.status(404).json({message: 'Task not found'});
+      const task = await Task.findById(req.params.id)
+      if (task.userId === req.body.userId) {
+        await task.updateOne({ $set: req.body });
+        res.status(200).json('Your task have been UPDATED successfully')
+      } else {
+        res.status(403).json("You don't have the right to UPDATE this task")
       }
-
-      task.save();
-
-      return res.send({ data: { task }, code: 200 });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+    } catch (err) {
+      res.status(500).json(err)
     }
   },
 
-  
+  // Delete task
   delete: async (req, res) => {
     try {
-      const task = await Task.findOneAndRemove(
-        {
-          _id: mongoose.Types.ObjectId(req.params.id),
-        }
-      );
-      if (!task) {
-        res.status(404).json({message: 'Task not found'});
+      const task = await Task.findById(req.params.id)
+      if (task.userId === req.body.userId) {
+        await task.deleteOne();
+        res.status(200).json('Your task have been DELETED successfully')
+      } else {
+        res.status(403).json("You don't have the right to DELETE this task")
       }
-      return res.send({ data: 'Task deleted successfully', code: 204 });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+    } catch (err) {
+      res.status(500).json(err)
     }
-  },
+  }
+
+  // delete: async (req, res) => {
+  //   try {
+  //     const task = await Task.findOneAndRemove(
+  //       {
+  //         _id: mongoose.Types.ObjectId(req.params.id),
+  //       }
+  //     );
+  //     if (!task) {
+  //       res.status(404).json({message: 'Task not found'});
+  //     }
+  //     return res.send({ data: 'Task deleted successfully', code: 204 });
+  //   } catch (error) {
+  //     res.status(500).json({ message: error.message });
+  //   }
+  // },
 };

@@ -4,7 +4,8 @@ module.exports = {
   validateCreateTask(req, res, next) {
     const schema = Joi.object({
       title: Joi.string().required(),
-      description: Joi.string().required()
+      description: Joi.string().required(),
+      userId: Joi.string().required()
     });
 
     const { error } = schema.validate(req.body);
@@ -21,6 +22,7 @@ module.exports = {
     const schema = Joi.object({
       title: Joi.string().optional(),
       description: Joi.string().optional(),
+      userId: Joi.string().required()
     });
 
     const { error } = schema.validate(req.body);

@@ -72,19 +72,4 @@ module.exports = {
     }
   }
 
-  // delete: async (req, res) => {
-  //   try {
-  //     const task = await Task.findOneAndRemove(
-  //       {
-  //         _id: mongoose.Types.ObjectId(req.params.id),
-  //       }
-  //     );
-  //     if (!task) {
-  //       res.status(404).json({message: 'Task not found'});
-  //     }
-  //     return res.send({ data: 'Task deleted successfully', code: 204 });
-  //   } catch (error) {
-  //     res.status(500).json({ message: error.message });
-  //   }
-  // },
 };

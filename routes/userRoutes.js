@@ -5,14 +5,14 @@ const userController = require('../controllers/userControllers.js');
 const userMiddleware = require('../middleware/userMiddleware.js');
 
 
-router.get('/:id', userController.view);
+router.get('/users/:id', userController.view);
 
 router.put(
-  '/:id',
+  '/users/:id',
   userMiddleware.validateUpdateUser,
   userController.update
 );
 
-router.delete('/:id', userController.delete);
+router.delete('/users/:id', userController.delete);
 
 module.exports = router;

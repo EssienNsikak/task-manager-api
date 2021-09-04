@@ -7,11 +7,11 @@ const authMiddleware = require('../middleware/authMiddleware.js');
 
 
 router.post(
-  '/register',
+  '/auth/register',
   authMiddleware.validateRegisterNewUser,
   authController.register
 );
 
-router.post('/login', authMiddleware.validateLoginUser, authController.login);
+router.post('/auth/login', authMiddleware.validateLoginUser, authController.login);
 
 module.exports = router;

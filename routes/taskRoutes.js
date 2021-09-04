@@ -7,21 +7,21 @@ const taskMiddleware = require('../middleware/taskMiddleware.js');
 
 
 router.post(
-  '/',
+  '/tasks',
   taskMiddleware.validateCreateTask,
   taskController.create
 );
 
-router.get('/', taskController.list);
+router.get('/tasks', taskController.list);
 
-router.get('/:id', taskController.view);
+router.get('/tasks/:id', taskController.view);
 
 router.put(
-  '/:id',
+  '/tasks/:id',
   taskMiddleware.validateUpdateTask,
   taskController.update
 );
 
-router.delete('/:id', taskController.delete);
+router.delete('/tasks/:id', taskController.delete);
 
 module.exports = router;

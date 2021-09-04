@@ -19,9 +19,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 
-app.use('/api/v1/tasks', taskRoutes);
-app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/users', userRoutes);
+app.use('/api/v1', taskRoutes);
+app.use('/api/v1', authRoutes);
+app.use('/api/v1', userRoutes);
 
 
 app.use((req, res, next) => {

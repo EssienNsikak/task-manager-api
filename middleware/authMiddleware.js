@@ -1,7 +1,7 @@
 const Joi = require('@hapi/joi');
 const User = require('../models/User');
 
-
+// Cut the first part and put inito another file and call it here
 module.exports = {
   validateRegisterNewUser: (req, res, next) => {
     const schema = Joi.object({

@@ -5,15 +5,14 @@ const mongoose = require('mongoose');
 module.exports = {
   //Create task
   create: async (req, res) => {
-    const {title, description, createdBy} = req.body;
     try {
       const task = await Task.create(req.body);
       if (!task) {
-        res.status(404).json({message: 'Task could not be created'});
+        res.status(500).send({message: 'Task could not be created'});
       }
       return res.send({ data: { task }, code: 201 });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).send({ message: error.message });
     }
   },
 
@@ -23,7 +22,7 @@ module.exports = {
       const tasks = await Task.find();
       return res.send({ data: tasks, code: 200 });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).send({ message: error.message });
     }
   },
 
@@ -34,11 +33,11 @@ module.exports = {
         _id: mongoose.Types.ObjectId(req.params.id),
       });
       if (!task) {
-        res.status(404).json({message: 'Task not found'});
+        res.status(404).send({message: 'Task not found'});
       }
       return res.send({ data: { task }, code: 200 });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).send({ message: error.message });
     }
   },
 
@@ -48,12 +47,12 @@ module.exports = {
       const task = await Task.findById(req.params.id)
       if (task.userId === req.body.userId) {
         await task.updateOne({ $set: req.body });
-        res.status(200).json('Your task have been UPDATED successfully')
+        res.status(200).send('Your task have been UPDATED successfully')
       } else {
-        res.status(403).json("You don't have the right to UPDATE this task")
+        res.status(403).send("You don't have the right to UPDATE this task")
       }
     } catch (err) {
-      res.status(500).json(err)
+      res.status(500).send(err)
     }
   },
 
@@ -63,12 +62,12 @@ module.exports = {
       const task = await Task.findById(req.params.id)
       if (task.userId === req.body.userId) {
         await task.deleteOne();
-        res.status(200).json('Your task have been DELETED successfully')
+        res.status(200).send('Your task have been DELETED successfully')
       } else {
-        res.status(403).json("You don't have the right to DELETE this task")
+        res.status(403).send("You don't have the right to DELETE this task")
       }
     } catch (err) {
-      res.status(500).json(err)
+      res.status(500).send(err)
     }
   }
 

@@ -11,12 +11,12 @@ module.exports = {
         _id: mongoose.Types.ObjectId(req.params.id),
       });
       if (!user) {
-        res.status(404).json({message: 'User not found'});
+        res.status(404).send({message: 'User not found'});
       }
       const { password, updatedAt, ...other } = user._doc
       return res.send({ data: { other }, code: 200 });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).send({ message: error.message });
     }
   },
 
@@ -29,7 +29,7 @@ module.exports = {
         try {
           req.body.password = bcrypt.hashSync(req.body.password, 10)
         } catch (err) {
-          return res.status(500).json(err);
+          return res.status(500).send(err);
         }
       }
 
@@ -37,13 +37,13 @@ module.exports = {
         const user = await User.findByIdAndUpdate(req.params.id, {
           $set: req.body,
         });
-        res.status(200).json('Your account has been UPDATED successfully')
+        res.status(200).send({ message: 'Your account has been UPDATED successfully' })
       } catch (err) {
-        return res.status(500).json(err);
+        return res.status(500).send(err);
       }
 
     } else {
-      return res.status(403).json('You can only UPDATE your account!')
+      return res.status(403).send('You can only UPDATE your account!')
     }
   },
 
@@ -55,13 +55,13 @@ module.exports = {
 
       try {
         const user = await User.findByIdAndDelete({ _id: req.params.id });
-        res.status(200).json('Your account has been DELETED successfully')
+        res.status(200).send({ message: 'Your account has been DELETED successfully' })
       } catch (err) {
-        return res.status(500).json(err);
+        return res.status(500).send(err);
       }
 
     } else {
-      return res.status(403).json('You can only DELETE your account!')
+      return res.status(403).send('You can only DELETE your account!')
     }
   },
 };
